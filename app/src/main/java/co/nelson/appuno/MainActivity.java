@@ -11,7 +11,7 @@ import android.widget.TextView;
 public class MainActivity extends AppCompatActivity {
 
    TextView nombreUsuario;
-   Button btn1,btn2;
+   Button btn1,btn2, alarma;
    String Tag = "Prueba";
 
     @Override
@@ -22,13 +22,13 @@ public class MainActivity extends AppCompatActivity {
         nombreUsuario = (TextView) findViewById(R.id.usuario);
         btn1 = findViewById(R.id.btn1);
         btn2 = findViewById(R.id.btn2);
+        alarma = findViewById(R.id.alarma);
 
 
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 nombreUsuario.setText("Presioné Boton Uno");
-
             }
         });
 
@@ -39,6 +39,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        alarma.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                createAlarm("Despertar", 8, 30);
+            }
+        })
 
     }
 
@@ -76,5 +82,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         Log.i(Tag,"Estoy en OnDestroy");
+    }
+    public void createAlarm(String message, int hour, int minutes) {
+    Intent intent = new Intent(AlarmClock.ACTION_SET_ALARM)
+            .putExtra(AlarmClock.EXTRA_MESSAGE, message)
+            .putExtra(AlarmClock.EXTRA_HOUR, hour)
+            .putExtra(AlarmClock.EXTRA_MINUTES, minutes);
+    if (intent.resolveActivity(getPackageManager()) != null) {
+        startActivity(intent);
+    }
     }
 }
